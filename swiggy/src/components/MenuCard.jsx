@@ -4,6 +4,7 @@ import { cartContex } from "../contexapi/Capi";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, clearCart } from "../utils/CartSlice";
 import toast from "react-hot-toast";
+import AddtoCartBtn from "./AddtoCartBtn";
 
 let veg =
   "https://packagingguruji.com/wp-content/uploads/2022/09/Veg-Logo-2.png";
@@ -70,7 +71,7 @@ function DitelMenuCart({ info, resInfo }) {
     name,
     defaultPrice,
     price,
-    itemAttribute: { vegClassifier },
+    itemAttribute,
     ratings: {
       aggregatedRating: { rating, ratingCountV2 },
     },
@@ -79,28 +80,28 @@ function DitelMenuCart({ info, resInfo }) {
   } = info;
 
   // const { cartData, setCardData } = useContext(cartContex);
-  const cartData = useSelector((state) => state.CartSlice.cartItems || []);
+  // const cartData = useSelector((state) => state.CartSlice.cartItems || []);
   const [isDiffres, setisDiffres] = useState(false);
 
-  const SemProductNot = useSelector((state) => state.CartSlice.resInfo || {});
-  const dispatch = useDispatch();
+  // const SemProductNot = useSelector((state) => state.CartSlice.resInfo || {});
+  // const dispatch = useDispatch();
 
-  function handlAddtoCart() {
-    //  console.log("resInfo:", resInfo);
-  const isAdded = cartData.some((data) => data.id === info.id);
+  // function handlAddtoCart() {
+  //    console.log(info);
+  // const isAdded = cartData.some((data) => data.id === info.id);
 
-  if (!isAdded) {
-    if (!SemProductNot.name || SemProductNot.name === resInfo.name) {
-      dispatch(addToCart({ info, resInfo }));
-      toast.success("Food added to cart");
-    } else {
-      toast.error("Your cart contains items from another restaurant.");
-      handlisNo(); // Ensure this function is defined
-    }
-  } else {
-    toast.error("Item is already in the cart.");
-  }
-  }
+  // if (!isAdded) {
+  //   if (!SemProductNot.name || SemProductNot.name === resInfo.name) {
+  //     dispatch(addToCart({ info, resInfo }));
+  //     toast.success("Food added to cart");
+  //   } else {
+  //     toast.error("Your cart contains items from another restaurant.");
+  //     handlisNo(); // Ensure this function is defined
+  //   }
+  // } else {
+  //   toast.error("Item is already in the cart.");
+  // }
+  // }
 
   function handlisNo(){
     setisDiffres((prev) => !prev);
@@ -117,11 +118,7 @@ function ClearCart() {
       <div className="">
         <div className="flex w-full justify-between min-h-[182px]">
           <div className="w-[70%] ">
-            <img
-              className="w-8"
-              src={vegClassifier === "VEG" ? veg : nonveg}
-              alt=""
-            />
+           itemAttribute
             {/* <p>{vegClassifier}</p> */}
             <h2 className="font-bold text-lg">{name}</h2>
             <p className="font-bold text-lg">
@@ -144,12 +141,13 @@ function ClearCart() {
               }
               alt=""
             />
-            <button
+            {/* <button
               onClick={handlAddtoCart}
               className="absolute px-10 drop-shadow font-bold py-2 rounded-xl text-lg text-green-500 bg-white bottom-[-22px] left-6  border"
             >
               Add
-            </button>
+            </button> */}
+            <AddtoCartBtn info={info} resInfo={resInfo} />
           </div>
         </div>
         <hr className="my-5 border-[1px]" />
@@ -169,7 +167,7 @@ function ClearCart() {
                   NO
                 </button>
                 <button
-                  onClick={ClearCart}
+                  onClick={clearCart}
                   className="px-4 w-[46%] py-2 bg-green-600  text-white"
                 >
                   YES, START AFRESH

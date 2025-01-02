@@ -42,16 +42,18 @@ export default function RestorntManu() {
 
   // console.log(res);
 
-    let newData =
-      (res?.data?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards).filter(
-        (data) => data?.card?.card?.itemCards || data?.card?.card?.categories
-      );
- 
-    setTopData(
-      (res?.data?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards).filter(data => data?.card?.card?.title == "Top Picks")[0]);
-    setMenuData(newData);
-  }
+    let cards = res?.data?.cards?.[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards || [];
 
+let newData = cards.filter(
+  (data) => data?.card?.card?.itemCards || data?.card?.card?.categories
+);
+
+let topPick = cards.find(data => data?.card?.card?.title === "Top Picks");
+
+setTopData(topPick);
+setMenuData(newData);
+
+  }
   useEffect(() => {
     fetchMenu();
   }, []);

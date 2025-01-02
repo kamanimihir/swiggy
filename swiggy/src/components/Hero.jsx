@@ -30,32 +30,44 @@ export default function Hero() {
 
   const filterVal = useSelector((state) => state.filterSlice.filterVal);
   // console.log(DataToprestaurant);
-  const filteredData = DataToprestaurant.filter((item) => {
-    if (!filterVal) return true;
+const filteredData = DataToprestaurant.filter((item) => {
+  if (!filterVal) return true;
 
-    switch (filterVal) {
-      case "Rating 4.0+":
-        return item?.info?.avgRating > 4;
-      case "Offers":
-        return true
-      case "Rs. 300-Rs. 600":
-        return (
-          item?.info?.costForTwo?.slice(1, 4) >= "300" &&
-          item?.info?.costForTwo?.slice(1, 4) <= "600"
-        );
-      case "Less then Rs. 300":
-        return item?.info?.costForTwo?.slice(1, 4) < "300";
-      case "Fast Delivery":
-        const slaString = item?.info?.sla?.slaString || "";
-        const maxDeliveryTime = parseInt(
-          slaString.split("-")[1]?.replace(" mins", "").trim()
-        );
-        return maxDeliveryTime && maxDeliveryTime <= 25
+  switch (filterVal) {
+    case "Rating 4.0+":
+      return item?.info?.avgRating && item.info.avgRating > 4;
 
-      default:
-        return true;
-    }
-  });
+    case "Offers":
+      // Placeholder for additional logic if needed
+      return true;
+
+    case "Rs. 300-Rs. 600":
+      const costForTwo = parseInt(
+        item?.info?.costForTwo?.replace(/[^\d]/g, ""),
+        10
+      );
+      return costForTwo >= 300 && costForTwo <= 600;
+
+    case "Less then Rs. 300":
+      const costForTwoUnder300 = parseInt(
+        item?.info?.costForTwo?.replace(/[^\d]/g, ""),
+        10
+      );
+      return costForTwoUnder300 < 300;
+
+    case "Fast Delivery":
+      const slaString = item?.info?.sla?.slaString || "";
+      const maxDeliveryTime = parseInt(
+        slaString.split("-")[1]?.replace(" mins", "").trim(),
+        10
+      );
+      return maxDeliveryTime && maxDeliveryTime <= 25;
+
+    default:
+      return true;
+  }
+});
+
 
   return (
     <>

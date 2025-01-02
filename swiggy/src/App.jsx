@@ -4,10 +4,13 @@
   import RestorntManu from "./components/RestorntManu";
   import { useEffect, useState } from "react";
   import { visibility,cartContex } from "./contexapi/capi";
-  import Card from "./components/Card";
+  // import Card from "./components/Card";
   import { useSelector } from "react-redux";
   import Signin from "./components/Signin";
 import Search from "./components/Search";
+import Cart from "./components/Cart";
+import Corporate from "./components/Corporate";
+
 
   function App() {
     const visible = useSelector((state) => state.toogleSlice.searcBarToog);
@@ -31,10 +34,15 @@ import Search from "./components/Search";
           <Routes>
             <Route path="/" element={<Heder />}>
               <Route path="/" element={<Hero />}></Route>
-              <Route path="/RestorntManu/:id" element={<RestorntManu />}></Route>
-              <Route path="/search" element={<Search/>}></Route>
+              <Route
+                path="/RestorntManu/:id"
+                element={<RestorntManu />}
+              ></Route>
+              <Route path="/search" element={<Search />}></Route>
+              <Route path="/Cart" element={<Cart />}></Route>
+              <Route path="/Corporate" element={<Corporate />}></Route>
+
               {/* <Route path="/signin" element={<Signin />}></Route> */}
-              <Route path="*" element={<Card/>}></Route>
             </Route>
           </Routes>
         </div>

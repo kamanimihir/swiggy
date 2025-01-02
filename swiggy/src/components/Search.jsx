@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { RxCross2 } from "react-icons/rx";
+import Dishes from "./Dishes";
+import SearchRestorent from "./SearchRestorent";
+import { CiSearch } from "react-icons/ci";
+import { RxCross1 } from "react-icons/rx";
+
 
 function Search() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -30,14 +35,11 @@ function Search() {
       `https://www.swiggy.com/dapi/restaurants/search/v3?lat=22.327776112545223&lng=73.1765165179968&str=pi&trackingId=undefined&submitAction=ENTER&queryUniqueId=bc5017af-7e32-a9d5-a05b-e255337dcdd4&selectedPLTab=RESTAURANT`
     );
     let res = await data.json();
-    const finaldata =
-      res?.data?.cards[0]?.groupedCard?.cardGroupMap?.RESTAURANT?.cards.filter(
-        (data) => data?.card?.card?.info
-      );
+    const finaldata =( res?.data?.cards[0]?.groupedCard?.cardGroupMap?.RESTAURANT?.cards).filter((data) => data?.card?.card?.info);
     setRestaurantData(finaldata);
+    // console.log(finaldata);
   }
 
-  console.log(restaurantData);
   useEffect(() => {
     if (searchQuery === "") {
       return;
@@ -45,15 +47,25 @@ function Search() {
     fetchDishes();
     fetchResturntData();
   }, [searchQuery]);
+  // console.log(object)
   return (
-    <div className="w-full md:w-[50%] mx-auto mt-8">
-      
+    <div className="w-full md:w-[56%] mx-auto mt-8 relative">
       <input
-        className="w-full border-2 p-2 focus:outline-none"
+        className="w-full border-2 p-2 focus:outline-none mihir"
         type="text"
         placeholder="search for restaurant and food"
         onChange={(e) => setSearchQuery(e.target.value)}
       />
+
+        {searchQuery.trim() === "" ? (
+    <CiSearch className="absolute right-0 top-2 mx-4 text-2xl" />
+  ) : (
+    <RxCross1
+      className="absolute right-0 top-2 mx-4 text-2xl cursor-pointer"
+  
+    />
+  )}
+
       <div className="my-2 flex gap-3">
         {searchQuery}
         {filterOption.map((filterName) => (
@@ -68,44 +80,10 @@ function Search() {
           </button>
         ))}
       </div>
-      <div className="w-full md:w-[700px] bg-[#f4f5f7]">
+      <div className="w-full md:w-[850px] bg-[#f4f5f7] flex justify-evenly flex-wrap">
         {activeBtn === "Dishes"
-          ? dishes.map(
-              ({
-                card: {
-                  card: {
-                    info: { imageId = "", name, price, isVeg = 0 },
-                    restaurant: {
-                      info: {
-                        id,
-                        name: resName,
-                        avgRating,
-                        sla: { slaString },
-                      },
-                    },
-                  },
-                },
-              }) => <h1>{name}</h1>
-            )
-          : restaurantData.map(
-              ({
-                card: {
-                  card: {
-                    info: {
-                      id,
-                      cloudinaryImageId,
-                      aggregatedDiscountInfoV3 = {},
-                      costForTwoMessage,
-                      cuisines,
-                      promoted = false,
-                      name,
-                      avgRating,
-                      sla: { slaString },
-                    },
-                  },
-                },
-              }) => <h1>{name}</h1>
-            )}
+          ? dishes.map((data) => <Dishes data={data} />)
+          : restaurantData.map((data) => <SearchRestorent data={data} />)}
       </div>
     </div>
   );
